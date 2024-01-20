@@ -1,14 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import {observer} from 'mobx-react-lite'
+import {Provider} from './store'
+import {createStackNavigator} from 'react-navigation-stack'
+import {createAppContainer} from 'react-navigation'
+import HomeScreen from './src/screens/Home';
+import AboutScreen from './src/screens/About';
+import LoadingScreen from './src/screens/Loading';
 
-export default function App() {
+const AppNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
+  About: AboutScreen,
+  Loading: LoadingScreen
+}, {
+  initialRouteName: 'Home'
+});
+
+const AppContainer = createAppContainer(AppNavigator);
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <Provider>
       <StatusBar style="auto" />
-    </View>
+      <AppContainer />
+    </Provider>
   );
 }
+
+export default observer(App)
 
 const styles = StyleSheet.create({
   container: {
